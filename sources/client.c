@@ -6,24 +6,45 @@
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 02:09:52 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/04/24 11:06:40 by ljerinec         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:18:51 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
-void	send(char *str);
+void	char_to_bit(int pid, char str);
 
 int	main(int argc, char **argv)
 {
+	int	pid;
+	int	i;
+
+	i = 0;
+	pid = ft_atoi(argv[1]);
 	if (argc != 3)
 		return (0);
-	ft_printf("Pid : %s\n", argv[1]);
-	ft_printf("Msg : %s\n", argv[2]);
+	while (argv[2][i])
+		char_to_bit(pid, argv[2][i++]);
 	return (0);
 }
 
-void	send(char *str)
+void	char_to_bit(int pid, char str)
 {
-	SIGUSR1
+	int	i;
+	int	result;
+
+	i = 8;
+	result = 0;
+	while (i > 0)
+	{
+		result = str % 2;
+		if (result == 0)
+			kill(pid, SIGUSR1);
+		if (result == 1)
+			kill(pid, SIGUSR2);
+		str = str / 2;
+		ft_printf("%d", result);
+		i--;
+		usleep(1);
+	}
 }

@@ -1,43 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/23 02:10:26 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/04/24 15:15:23 by ljerinec         ###   ########.fr       */
+/*   Created: 2022/11/16 01:10:04 by ljerinec          #+#    #+#             */
+/*   Updated: 2022/11/24 17:20:13 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minitalk.h"
+#include "libft.h"
 
-void	usr1(int sig);
-void	usr2(int sig);
-
-int	main(void)
+int	ft_memcmp(void *s1, void *s2, size_t n)
 {
-	pid_t	pid;
+	size_t	i;
+	char	*buffs1;
+	char	*buffs2;
 
-	pid = getpid();
-	ft_printf("PID : %d\n", pid);
-	signal(SIGUSR1, usr1);
-	signal(SIGUSR2, usr2);
-	while (1)
+	buffs1 = (char *)s1;
+	buffs2 = (char *)s2;
+	i = 0;
+	while (i < n)
 	{
-		usleep(1);
+		if (buffs1[i] != buffs2[i])
+			return ((unsigned char)buffs1[i] - (unsigned char)buffs2[i]);
+		i++;
 	}
 	return (0);
-}
-
-void	usr1(int sig)
-{
-	(void) sig;
-	ft_printf("0");
-}
-
-void	usr2(int sig)
-{
-	(void) sig;
-	ft_printf("1");
 }

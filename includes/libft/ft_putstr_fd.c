@@ -1,43 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/23 02:10:26 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/04/24 15:15:23 by ljerinec         ###   ########.fr       */
+/*   Created: 2022/11/17 01:03:48 by ljerinec          #+#    #+#             */
+/*   Updated: 2022/11/18 00:52:35 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minitalk.h"
+#include "libft.h"
 
-void	usr1(int sig);
-void	usr2(int sig);
-
-int	main(void)
+void	ft_putstr_fd(char *s, int fd)
 {
-	pid_t	pid;
+	int	i;
 
-	pid = getpid();
-	ft_printf("PID : %d\n", pid);
-	signal(SIGUSR1, usr1);
-	signal(SIGUSR2, usr2);
-	while (1)
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i])
 	{
-		usleep(1);
+		write(fd, &s[i], 1);
+		i++;
 	}
-	return (0);
-}
-
-void	usr1(int sig)
-{
-	(void) sig;
-	ft_printf("0");
-}
-
-void	usr2(int sig)
-{
-	(void) sig;
-	ft_printf("1");
 }

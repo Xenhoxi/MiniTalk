@@ -1,43 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/23 02:10:26 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/04/24 15:15:23 by ljerinec         ###   ########.fr       */
+/*   Created: 2022/11/16 23:32:47 by ljerinec          #+#    #+#             */
+/*   Updated: 2022/11/21 18:11:04 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minitalk.h"
+#include "libft.h"
 
-void	usr1(int sig);
-void	usr2(int sig);
-
-int	main(void)
+void	*ft_calloc(size_t count, size_t size)
 {
-	pid_t	pid;
+	char	*memalloc;
 
-	pid = getpid();
-	ft_printf("PID : %d\n", pid);
-	signal(SIGUSR1, usr1);
-	signal(SIGUSR2, usr2);
-	while (1)
-	{
-		usleep(1);
-	}
-	return (0);
-}
-
-void	usr1(int sig)
-{
-	(void) sig;
-	ft_printf("0");
-}
-
-void	usr2(int sig)
-{
-	(void) sig;
-	ft_printf("1");
+	memalloc = 0;
+	memalloc = malloc(size * count);
+	if (!memalloc)
+		return (NULL);
+	ft_bzero(memalloc, count * size);
+	return (memalloc);
 }

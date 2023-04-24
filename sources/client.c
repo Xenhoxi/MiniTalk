@@ -6,7 +6,7 @@
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 02:09:52 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/04/24 15:18:51 by ljerinec         ###   ########.fr       */
+/*   Updated: 2023/04/24 15:24:34 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	main(int argc, char **argv)
 		return (0);
 	while (argv[2][i])
 		char_to_bit(pid, argv[2][i++]);
+	while (1)
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 02:09:52 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/04/24 15:24:34 by ljerinec         ###   ########.fr       */
+/*   Updated: 2023/04/27 12:06:45 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
 		return (0);
 	while (argv[2][i])
 		char_to_bit(pid, argv[2][i++]);
-	while (1)
+	char_to_bit(pid, 0);
 	return (0);
 }
 
@@ -41,11 +41,10 @@ void	char_to_bit(int pid, char str)
 		result = str % 2;
 		if (result == 0)
 			kill(pid, SIGUSR1);
-		if (result == 1)
+		else if (result == 1)
 			kill(pid, SIGUSR2);
 		str = str / 2;
-		ft_printf("%d", result);
 		i--;
-		usleep(1);
+		usleep(30);
 	}
 }

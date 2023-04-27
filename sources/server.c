@@ -6,14 +6,15 @@
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 02:10:26 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/04/24 15:15:23 by ljerinec         ###   ########.fr       */
+/*   Updated: 2023/04/27 12:21:51 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minitalk.h"
 
-void	usr1(int sig);
-void	usr2(int sig);
+void	sigusr(int sig);
+
+char	*g_str;
 
 int	main(void)
 {
@@ -21,23 +22,31 @@ int	main(void)
 
 	pid = getpid();
 	ft_printf("PID : %d\n", pid);
-	signal(SIGUSR1, usr1);
-	signal(SIGUSR2, usr2);
+	signal(SIGUSR1, sigusr);
+	signal(SIGUSR2, sigusr);
 	while (1)
 	{
-		usleep(1);
+		pause();
 	}
 	return (0);
 }
 
-void	usr1(int sig)
+void	sigusr(int sig)
 {
-	(void) sig;
-	ft_printf("0");
-}
+	static int	bit = 0;
+	static int	i = 0;
 
-void	usr2(int sig)
-{
-	(void) sig;
-	ft_printf("1");
+	if (sig == SIGUSR2)
+		i = i | (0x01 << bit);
+	bit++;
+	if (bit == 8)
+	{
+		if (i == 0)
+		{
+			ft_printf("%s\n", g_str);
+		}
+		g_str = ft_strjoin(g_str, ft_strdup((char *)&i));
+		bit = 0;
+		i = 0;
+	}
 }

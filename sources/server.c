@@ -6,7 +6,7 @@
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 02:10:26 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/05/02 12:34:18 by ljerinec         ###   ########.fr       */
+/*   Updated: 2023/05/02 14:01:06 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ char	*g_str;
 
 int	main(void)
 {
-	pid_t	pid;
+	pid_t				pid;
+	struct sigaction	s_sigaction;
 
 	pid = getpid();
 	ft_printf("PID : %d\n", pid);
-	signal(SIGUSR1, sigusr);
-	signal(SIGUSR2, sigusr);
+	s_sigaction.sa_sigaction
+	sigaction(SIGUSR1, &sigusr, 0);
+	sigaction(SIGUSR2, &sigusr, 0);
 	while (1)
 	{
 		usleep(1);
@@ -41,12 +43,12 @@ void	sigusr(int sig)
 	bit++;
 	if (bit == 8)
 	{
-		if (i == 0)
+		g_str = ft_strjoin(g_str, (char *)&i);
+		if (i == 0 && g_str)
 		{
-			ft_printf("%s\n", g_str);
+			ft_printf("%s", g_str);
 			free(g_str);
 		}
-		g_str = ft_strjoin(g_str, (char *)&i);
 		bit = 0;
 		i = 0;
 	}

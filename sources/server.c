@@ -6,7 +6,7 @@
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 02:10:26 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/04/29 12:39:51 by ljerinec         ###   ########.fr       */
+/*   Updated: 2023/05/02 12:34:18 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,9 @@ void	sigusr(int sig)
 		if (i == 0)
 		{
 			ft_printf("%s\n", g_str);
-			g_str = NULL;
+			free(g_str);
 		}
-		if (i >= 0x00 && i <= 0x7F)
-			g_str = ft_strjoin(g_str, ft_strdup((char *)&i));
+		g_str = ft_strjoin(g_str, (char *)&i);
 		bit = 0;
 		i = 0;
 	}

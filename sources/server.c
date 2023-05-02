@@ -6,7 +6,7 @@
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 02:10:26 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/04/27 12:21:51 by ljerinec         ###   ########.fr       */
+/*   Updated: 2023/04/29 12:39:51 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(void)
 	signal(SIGUSR2, sigusr);
 	while (1)
 	{
-		pause();
+		usleep(1);
 	}
 	return (0);
 }
@@ -44,8 +44,10 @@ void	sigusr(int sig)
 		if (i == 0)
 		{
 			ft_printf("%s\n", g_str);
+			g_str = NULL;
 		}
-		g_str = ft_strjoin(g_str, ft_strdup((char *)&i));
+		if (i >= 0x00 && i <= 0x7F)
+			g_str = ft_strjoin(g_str, ft_strdup((char *)&i));
 		bit = 0;
 		i = 0;
 	}

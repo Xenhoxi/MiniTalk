@@ -6,7 +6,7 @@
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 02:10:26 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/05/03 12:25:06 by ljerinec         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:58:58 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,28 +62,39 @@ char	*ft_strjoin_char(char *s1, char s2)
 	return (chainjoin);
 }
 
+void	error(pid_t pid_client, int *bit, int *i)
+{
+	kill(pid_client, SIGUSR1);
+	g_str = NULL;
+	*bit = 0;
+	*i = 0;
+	ft_printf("\n");
+	if (g_str)
+		free(g_str);
+}
+
 void	sigusr(int sig, siginfo_t *info, void *context)
 {
 	static int	bit = 0;
 	static int	i = 0;
-	pid_t		pid_client;
-	static char	*str;
+	static char	*g_str;
 
-	pid_client = 0;
+	(void) info;
 	(void) context;
-	if (!pid_client)
-		pid_client = info->si_pid;
 	if (sig == SIGUSR2)
 		i = i | (0x01 << bit);
 	bit++;
 	if (bit == 8)
 	{
-		str = ft_strjoin_char(str, i);
+		if (i < 0 || i > 0x7F)
+			error(info->si_pid, &bit, &i);
+		else
+			g_str = ft_strjoin_char(g_str, i);
 		if (i == 0)
 		{
-			ft_printf("%s", str);
-			str = NULL;
-			free(str);
+			ft_printf("%s", g_str);
+			g_str = NULL;
+			free(g_str);
 		}
 		bit = 0;
 		i = 0;

@@ -6,7 +6,7 @@
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 02:09:52 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/05/03 13:54:52 by ljerinec         ###   ########.fr       */
+/*   Updated: 2023/05/04 16:19:42 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	char_to_bit(int pid, char str);
 void	receved(int sig, siginfo_t *info, void *context);
-void	error(int sig, siginfo_t *info, void *context);
+void	nothing(int sig, siginfo_t *info, void *context);
 
-int		g_bool = 0;
+int		g_bool = 1;
 
 int	main(int argc, char **argv)
 {
@@ -26,29 +26,23 @@ int	main(int argc, char **argv)
 
 	i = 0;
 	pid = ft_atoi(argv[1]);
-	s_sigaction.sa_sigaction = error;
+	s_sigaction.sa_sigaction = nothing;
 	s_sigaction.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &s_sigaction, 0);
 	sigaction(SIGUSR2, &s_sigaction, 0);
 	if (argc != 3)
 		return (0);
 	while (argv[2][i])
-	{
-		if (g_bool == 1)
-			break ;
 		char_to_bit(pid, argv[2][i++]);
-	}
-	if (g_bool == 0)
-		char_to_bit(pid, 0);
+	char_to_bit(pid, 0);
 	return (0);
 }
 
-void	error(int sig, siginfo_t *info, void *context)
+void	nothing(int sig, siginfo_t *info, void *context)
 {
 	(void) info;
 	(void) context;
-	if (sig == SIGUSR1)
-		g_bool = 1;
+	(void) sig;
 }
 
 void	char_to_bit(int pid, char str)
@@ -67,6 +61,7 @@ void	char_to_bit(int pid, char str)
 			kill(pid, SIGUSR2);
 		str = str / 2;
 		i--;
-		usleep(50);
+		pause();
+		usleep(10);
 	}
 }

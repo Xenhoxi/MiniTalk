@@ -6,7 +6,7 @@
 /*   By: ljerinec <ljerinec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/23 02:10:26 by ljerinec          #+#    #+#             */
-/*   Updated: 2023/05/03 17:10:28 by ljerinec         ###   ########.fr       */
+/*   Updated: 2023/05/04 16:23:35 by ljerinec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(void)
 	sigaction(SIGUSR2, &s_sigaction, 0);
 	while (1)
 	{
-		pause();
+		usleep(1);
 	}
 	return (0);
 }
@@ -60,13 +60,10 @@ char	*ft_strjoin_char(char *s1, char s2)
 	return (chainjoin);
 }
 
-void	error(pid_t pid_client, int *bit, int *i, char *str)
+void	error(int *bit, char *i, char *str)
 {
-	kill(pid_client, SIGUSR1);
-	str = NULL;
 	*bit = 0;
 	*i = 0;
-	ft_printf("\n");
 	if (str)
 		free(str);
 }
@@ -74,7 +71,7 @@ void	error(pid_t pid_client, int *bit, int *i, char *str)
 void	sigusr(int sig, siginfo_t *info, void *context)
 {
 	static int	bit = 0;
-	static int	i = 0;
+	static char	i = 0;
 	static char	*str = NULL;
 
 	(void) info;
@@ -84,14 +81,11 @@ void	sigusr(int sig, siginfo_t *info, void *context)
 	bit++;
 	if (bit == 8)
 	{
-		if (i < 0 || i > 0x7F)
-			error(info->si_pid, &bit, &i, str);
-		else
-		{
-			ft_printf("%c", i);
+		if (i >= 0x00 && i <= 0x7F)
 			str = ft_strjoin_char(str, i);
-		}
-		if (i == 0)
+		else
+			exit(0);
+		if (i == 0 || ft_strlen(str) > 1000)
 		{
 			ft_printf("%s", str);
 			str = NULL;
@@ -100,4 +94,5 @@ void	sigusr(int sig, siginfo_t *info, void *context)
 		bit = 0;
 		i = 0;
 	}
+	(usleep(50), kill(info->si_pid, SIGUSR2));
 }
